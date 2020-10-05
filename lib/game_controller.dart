@@ -2,7 +2,9 @@ import 'package:flame/flame.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
+import 'package:flutter/services.dart';
 import 'dart:math';
 
 class GameController extends Game {
@@ -43,6 +45,7 @@ class GameController extends Game {
   void update(double t) {
     rains.forEach((Rain rain) => rain.update(t));
     print('Update');
+    SystemChannels.textInput.invokeMethod('TextInput.hidden');
   }
 
   @override
