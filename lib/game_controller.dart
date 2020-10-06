@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
+import 'package:rainofwords/view.dart';
+import 'package:rainofwords/views/view-home.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
@@ -12,6 +14,8 @@ class GameController extends Game {
   double tileSize;
   List<Rain> rains;
   Random random;
+  View activeView = View.home;
+  HomeView homeView;
 
   GameController() {
     initialize();
@@ -21,6 +25,7 @@ class GameController extends Game {
     rains = List<Rain>();
     random = Random();
 
+    homeView = HomeView(this);
     resize(await Flame.util.initialDimensions());
 
     spanRain();
@@ -40,6 +45,7 @@ class GameController extends Game {
 
     rains.forEach((Rain rain) => rain.render(c));
     SystemChannels.textInput.invokeMethod('TextInput.show');
+    homeView.render(c);
   }
 
   @override
