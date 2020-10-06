@@ -39,13 +39,13 @@ class GameController extends Game {
     c.drawRect(background, backgroundPaint);
 
     rains.forEach((Rain rain) => rain.render(c));
+    SystemChannels.textInput.invokeMethod('TextInput.show');
   }
 
   @override
   void update(double t) {
     rains.forEach((Rain rain) => rain.update(t));
     print('Update');
-    SystemChannels.textInput.invokeMethod('TextInput.hidden');
   }
 
   @override
