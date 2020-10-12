@@ -2,7 +2,9 @@ import 'package:flame/flame.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
+import 'package:flutter/services.dart';
 import 'dart:math';
 
 class GameController extends BaseGame {
@@ -38,6 +40,7 @@ class GameController extends BaseGame {
     words.forEach((word) {
       word.render(c);
     });
+
   }
 
   @override
