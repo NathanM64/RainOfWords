@@ -5,10 +5,11 @@ import 'package:flame/game.dart';
 import 'package:rainofwords/components/rain.dart';
 import 'dart:math';
 
-class GameController extends Game {
+class GameController extends BaseGame {
   Size screenSize;
   double tileSize;
-  List<Rain> rains;
+  Rain word;
+  List<Rain> words;
   Random random;
 
   GameController() {
@@ -16,17 +17,16 @@ class GameController extends Game {
   }
 
   void initialize() async {
-    rains = List<Rain>();
-    random = Random();
-
     resize(await Flame.util.initialDimensions());
-
-    spanRain();
+    random = Random();
+    words = List<Rain>();
+    generateAWord();
   }
 
-  void spanRain() {
-    double x = random.nextDouble() * (screenSize.width - tileSize);
-    rains.add(Rain(this, x, 50));
+  void generateAWord() {
+    double randomX = random.nextDouble() * (screenSize.width - tileSize);
+    word = Rain(this, 'Salut', randomX, 0);
+    words.add(word);
   }
 
   @override
@@ -35,15 +35,13 @@ class GameController extends Game {
     Rect background = Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
     Paint backgroundPaint = Paint()..color = Color(0xff17555f);
     c.drawRect(background, backgroundPaint);
-
-    rains.forEach((Rain rain) => rain.render(c));
+    words.forEach((word) {
+      word.render(c);
+    });
   }
 
   @override
-  void update(double t) {
-    rains.forEach((Rain rain) => rain.update(t));
-    print('Update');
-  }
+  void update(double t) {}
 
   @override
   void resize(Size size) {
