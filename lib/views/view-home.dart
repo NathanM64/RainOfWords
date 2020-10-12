@@ -1,6 +1,7 @@
-import 'dart:ui';
 import 'package:flame/sprite.dart';
 import 'package:rainofwords/game_controller.dart';
+import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class HomeView {
   final GameController game;
@@ -8,13 +9,8 @@ class HomeView {
   Sprite titleSprite;
 
   HomeView(this.game) {
-    titleRect = Rect.fromLTWH(
-      80,
-      225,
-      225,
-      225,
-    );
-    titleSprite = Sprite('title_home.png');
+    resize();
+    titleSprite = Sprite('croped_Bg.png');
   }
 
   void render(Canvas c) {
@@ -22,4 +18,9 @@ class HomeView {
   }
 
   void update(double t) {}
+
+  void resize() {
+    titleRect =
+        Rect.fromLTWH(0, 0, game.screenSize.width, game.screenSize.height);
+  }
 }

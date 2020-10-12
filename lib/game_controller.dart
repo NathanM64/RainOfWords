@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
+import 'package:rainofwords/views/start_button.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
-class GameController extends BaseGame {
+class GameController extends Game {
   Size screenSize;
   double tileSize;
   Rain word;
@@ -17,6 +18,7 @@ class GameController extends BaseGame {
   Random random;
   View activeView = View.home;
   HomeView homeView;
+  StartButton startButton;
 
   GameController() {
     initialize();
@@ -25,9 +27,10 @@ class GameController extends BaseGame {
   void initialize() async {
     words = List<Rain>();
     random = Random();
-
+    resize(Size.zero);
     homeView = HomeView(this);
-    resize(await Flame.util.initialDimensions());
+    startButton = StartButton(this);
+    // resize(await Flame.util.initialDimensions());
 
     generateAWord();
   }
@@ -40,8 +43,9 @@ class GameController extends BaseGame {
 
   @override
   void render(Canvas c) {
-    if (activeView != View.home) {
-      homeView.render(c);
+    if (activeView == View.home) homeView.render(c);
+    if (activeView == View.home) {
+      startButton.render(c);
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     } else {
       Rect background =
@@ -64,5 +68,6 @@ class GameController extends BaseGame {
   void resize(Size size) {
     screenSize = size;
     tileSize = screenSize.width / 10;
+    homeView?.resize();
   }
 }
