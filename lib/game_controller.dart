@@ -40,7 +40,7 @@ class GameController extends Game {
 
   @override
   void render(Canvas c) {
-    if (activeView == View.home) {
+    if (activeView != View.home) {
       homeView.render(c);
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     } else {
@@ -52,7 +52,6 @@ class GameController extends Game {
         word.render(c);
       });
       SystemChannels.textInput.invokeMethod('TextInput.show');
-      homeView.render(c);
     }
   }
 
