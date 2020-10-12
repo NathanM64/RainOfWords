@@ -1,5 +1,16 @@
-// ~480 words in total without accents or conjugated verbs
+/*
+ * This function return a list of random words pick in word_list
+ * @Param int Length of the returned list
+ */
+List getRandomWords(int listLength) {
+  var finalList = [];
+  for (var i=0; i<listLength; i++) {
+    finalList.add((word_list.toList()..shuffle()).first);
+  }
+  return finalList;
+}
 
+// ~480 words in total without accents or conjugated verbs
 const List<String> word_list = [
   "abandonner", 
   "accepter", 
