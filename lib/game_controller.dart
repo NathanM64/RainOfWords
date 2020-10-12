@@ -9,7 +9,7 @@ import 'package:rainofwords/views/view-home.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
-class GameController extends Game {
+class GameController extends BaseGame {
   Size screenSize;
   double tileSize;
   Rain word;
