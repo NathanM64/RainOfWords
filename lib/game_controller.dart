@@ -12,7 +12,8 @@ import 'dart:math';
 class GameController extends Game {
   Size screenSize;
   double tileSize;
-  List<Rain> rains;
+  Rain word;
+  List<Rain> words;
   Random random;
   View activeView = View.home;
   HomeView homeView;
@@ -22,35 +23,41 @@ class GameController extends Game {
   }
 
   void initialize() async {
-    rains = List<Rain>();
+    words = List<Rain>();
     random = Random();
 
     homeView = HomeView(this);
     resize(await Flame.util.initialDimensions());
 
-    spanRain();
+    generateAWord();
   }
 
-  void spanRain() {
-    double x = random.nextDouble() * (screenSize.width - tileSize);
-    rains.add(Rain(this, x, 50));
+  void generateAWord() {
+    double randomX = random.nextDouble() * (screenSize.width - tileSize);
+    word = Rain(this, 'Salut', randomX, 0);
+    words.add(word);
   }
 
   @override
   void render(Canvas c) {
-    print('Render');
-    Rect background = Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
-    Paint backgroundPaint = Paint()..color = Color(0xff17555f);
-    c.drawRect(background, backgroundPaint);
-
-    rains.forEach((Rain rain) => rain.render(c));
-    SystemChannels.textInput.invokeMethod('TextInput.show');
-    homeView.render(c);
+    if (activeView == View.home) {
+      homeView.render(c);
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+    } else {
+      Rect background =
+          Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
+      Paint backgroundPaint = Paint()..color = Color(0xff17555f);
+      c.drawRect(background, backgroundPaint);
+      words.forEach((word) {
+        word.render(c);
+      });
+      SystemChannels.textInput.invokeMethod('TextInput.show');
+      homeView.render(c);
+    }
   }
 
   @override
   void update(double t) {
-    rains.forEach((Rain rain) => rain.update(t));
     print('Update');
   }
 
