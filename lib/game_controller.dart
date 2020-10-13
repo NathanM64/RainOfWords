@@ -9,12 +9,15 @@ import 'package:rainofwords/views/view-home.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 
+const SPEED = 0.1;
+
 class GameController extends BaseGame {
   Size screenSize;
   double tileSize;
+  double createWordTimer = 0;
   Rain word;
-  List<Rain> words;
   Random random;
+  List<Rain> words = [];
   View activeView = View.home;
   HomeView homeView;
 
@@ -24,7 +27,6 @@ class GameController extends BaseGame {
 
   void initialize() async {
     words = List<Rain>();
-    random = Random();
 
     homeView = HomeView(this);
     resize(await Flame.util.initialDimensions());
@@ -33,8 +35,9 @@ class GameController extends BaseGame {
   }
 
   void generateAWord() {
+    random = Random();
     double randomX = random.nextDouble() * (screenSize.width - tileSize);
-    word = Rain(this, 'Salut', randomX, 0);
+    word = Rain(this, 'Salut', randomX);
     words.add(word);
   }
 
@@ -50,6 +53,8 @@ class GameController extends BaseGame {
       c.drawRect(background, backgroundPaint);
       words.forEach((word) {
         word.render(c);
+        c.restore();
+        c.save();
       });
       SystemChannels.textInput.invokeMethod('TextInput.show');
     }
@@ -57,7 +62,15 @@ class GameController extends BaseGame {
 
   @override
   void update(double t) {
-    print('Update');
+    this.createWordTimer += t;
+    if (this.createWordTimer >= 3) {
+      this.createWordTimer = 0;
+      generateAWord();
+    }
+    words.forEach((word) => word.update(t));
+    words.removeWhere((word) {
+      return word.destroy();
+    });
   }
 
   @override
