@@ -8,6 +8,7 @@ import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
+import 'package:rainofwords/components/word_list.dart';
 
 const SPEED = 0.1;
 
@@ -37,7 +38,7 @@ class GameController extends BaseGame {
   void generateAWord() {
     random = Random();
     double randomX = random.nextDouble() * (screenSize.width - tileSize);
-    word = Rain(this, 'Salut', randomX);
+    word = Rain(this, getRandomWord().toUpperCase(), randomX);
     words.add(word);
   }
 
@@ -63,7 +64,7 @@ class GameController extends BaseGame {
   @override
   void update(double t) {
     this.createWordTimer += t;
-    if (this.createWordTimer >= 3) {
+    if (this.createWordTimer >= 2) {
       this.createWordTimer = 0;
       generateAWord();
     }
@@ -76,6 +77,6 @@ class GameController extends BaseGame {
   @override
   void resize(Size size) {
     screenSize = size;
-    tileSize = screenSize.width / 10;
+    tileSize = screenSize.width / 3;
   }
 }

@@ -6,7 +6,7 @@ import 'package:flame/text_config.dart';
 import 'package:rainofwords/game_controller.dart';
 
 TextConfig regular = TextConfig(color: BasicPalette.white.color);
-TextConfig tiny = regular.withFontSize(12.0);
+TextConfig tiny = regular.withFontSize(20.0);
 const SPEED = 1;
 
 class Rain extends TextBoxComponent {
