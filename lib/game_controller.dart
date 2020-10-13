@@ -46,6 +46,7 @@ class GameController extends Game {
     if (activeView == View.home) homeView.render(c);
     if (activeView == View.home) {
       startButton.render(c);
+
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     } else {
       Rect background =
@@ -68,5 +69,19 @@ class GameController extends Game {
   void resize(Size size) {
     screenSize = size;
     tileSize = screenSize.width / 10;
+    startButton?.resize();
+  }
+
+  void onTapDown(TapDownDetails d) {
+    bool isHandled = false;
+    print('false');
+
+    if (!isHandled && startButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.home) {
+        startButton.onTapDown();
+        isHandled = true;
+        print('true');
+      }
+    }
   }
 }

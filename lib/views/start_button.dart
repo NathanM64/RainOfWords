@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flame/sprite.dart';
 import 'package:rainofwords/game_controller.dart';
+import 'package:rainofwords/view.dart';
 
 class StartButton {
   final GameController game;
@@ -8,12 +9,7 @@ class StartButton {
   Sprite sprite;
 
   StartButton(this.game) {
-    rect = Rect.fromLTWH(
-      80,
-      225,
-      225,
-      225,
-    );
+    resize();
     sprite = Sprite('title_home.png');
   }
 
@@ -23,5 +19,16 @@ class StartButton {
 
   void update(double t) {}
 
-  void onTap() {}
+  void resize() {
+    rect = Rect.fromLTWH(
+        game.tileSize * 1.5,
+        (game.screenSize.height * .25) - (game.tileSize * 1.5),
+        game.tileSize * 6,
+        game.tileSize * 6);
+  }
+
+  void onTapDown() {
+    game.activeView = View.playing;
+    print('Bien joué');
+  }
 }
