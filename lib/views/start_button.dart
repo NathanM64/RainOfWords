@@ -23,7 +23,5 @@ class StartButton {
 
   void update(double t) {}
 
-  void onTap() {
-    bool isHandLeft = false;
-  }
+  void onTap() {}
 }

@@ -1,26 +1,21 @@
-import 'package:flame/sprite.dart';
 import 'package:rainofwords/game_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flame_svg/flame_svg.dart';
 import 'dart:ui';
 
 class HomeView {
   final GameController game;
-  Rect titleRect;
-  Sprite titleSprite;
+  Svg homeSvg;
 
   HomeView(this.game) {
-    resize();
-    titleSprite = Sprite('croped_Bg.png');
+    homeSvg = Svg('images/Backg/Farm_Mountain.svg');
   }
 
   void render(Canvas c) {
-    titleSprite.renderRect(c, titleRect);
+    homeSvg.render(c, game.screenSize.width, game.screenSize.height);
+    // homeSvg.renderPosition(
+    //     c, position, game.screenSize.width, game.screenSize.height);
   }
 
   void update(double t) {}
-
-  void resize() {
-    titleRect =
-        Rect.fromLTWH(0, 0, game.screenSize.width, game.screenSize.height);
-  }
 }

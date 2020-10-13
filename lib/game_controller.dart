@@ -68,6 +68,5 @@ class GameController extends Game {
   void resize(Size size) {
     screenSize = size;
     tileSize = screenSize.width / 10;
-    homeView?.resize();
   }
 }
