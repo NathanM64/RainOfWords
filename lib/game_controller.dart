@@ -1,4 +1,4 @@
-import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
@@ -70,17 +70,16 @@ class GameController extends Game {
     screenSize = size;
     tileSize = screenSize.width / 10;
     startButton?.resize();
+    homeView?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
     bool isHandled = false;
-    print('false');
 
     if (!isHandled && startButton.rect.contains(d.globalPosition)) {
       if (activeView == View.home) {
         startButton.onTapDown();
         isHandled = true;
-        print('true');
       }
     }
   }

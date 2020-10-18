@@ -22,7 +22,7 @@ class StartButton {
   void resize() {
     rect = Rect.fromLTWH(
         game.tileSize * 1.5,
-        (game.screenSize.height * .25) - (game.tileSize * 1.5),
+        (game.screenSize.height * .5) - (game.tileSize * 1.5),
         game.tileSize * 6,
         game.tileSize * 6);
   }
