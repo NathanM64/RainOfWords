@@ -1,16 +1,18 @@
 import 'package:flame/sprite.dart';
 import 'package:rainofwords/game_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flame_svg/flame_svg.dart';
 import 'dart:ui';
 
-class HomeView {
+class LevelView {
   final GameController game;
+  Svg homeSvg;
   Rect homeRect;
   Sprite homeSprite;
 
-  HomeView(this.game) {
+  LevelView(this.game) {
     resize();
-    homeSprite = Sprite('Backg/farm_moutain.png');
+    homeSprite = Sprite('Backg/night_mountain.png');
   }
 
   void render(Canvas c) {

@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
-import 'package:rainofwords/views/start_button.dart';
+import 'package:rainofwords/views/view-level.dart';
+import 'package:rainofwords/components/start_button.dart';
+import 'package:rainofwords/components/btn_level.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:rainofwords/components/word_list.dart';
@@ -22,7 +24,10 @@ class GameController extends Game {
   List<Rain> words = [];
   View activeView = View.home;
   HomeView homeView;
+  LevelView levelView;
+
   StartButton startButton;
+  BtnLevel btnLevel;
 
   GameController() {
     initialize();
@@ -34,7 +39,8 @@ class GameController extends Game {
     resize(Size.zero);
     homeView = HomeView(this);
     startButton = StartButton(this);
-    // resize(await Flame.util.initialDimensions());
+    btnLevel = BtnLevel(this);
+    levelView = LevelView(this);
 
     generateAWord();
   }
@@ -51,8 +57,10 @@ class GameController extends Game {
     if (activeView == View.home) homeView.render(c);
     if (activeView == View.home) {
       startButton.render(c);
-
       SystemChannels.textInput.invokeMethod('TextInput.hide');
+    } else if (activeView == View.level) {
+      levelView.render(c);
+      btnLevel.render(c);
     } else {
       Rect background =
           Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
@@ -86,11 +94,19 @@ class GameController extends Game {
     tileSize = screenSize.width / 10;
     startButton?.resize();
     homeView?.resize();
+    levelView?.resize();
+    btnLevel?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
     bool isHandled = false;
 
+    if (!isHandled && btnLevel.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevel.onTapDown();
+        isHandled = true;
+      }
+    }
     if (!isHandled && startButton.rect.contains(d.globalPosition)) {
       if (activeView == View.home) {
         startButton.onTapDown();
