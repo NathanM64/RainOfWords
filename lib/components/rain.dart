@@ -1,13 +1,12 @@
 import 'dart:ui';
-import 'package:flame/palette.dart';
 import 'package:flame/components/text_box_component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:rainofwords/game_controller.dart';
 
-TextConfig regular = TextConfig(color: BasicPalette.white.color);
-TextConfig tiny = regular.withFontSize(20.0);
-const SPEED = 0.2;
+TextConfig regular = TextConfig(color: Color(0xFF0D1D3E), fontFamily: 'Chlakh');
+TextConfig tiny = regular.withFontSize(34.0);
+const SPEED = 1;
 
 class Rain extends TextBoxComponent {
   GameController game;

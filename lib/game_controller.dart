@@ -1,4 +1,4 @@
-import 'package:flame/flame.dart';
+import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:rainofwords/components/rain.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
+import 'package:rainofwords/views/view-level.dart';
+import 'package:rainofwords/components/start_button.dart';
+import 'package:rainofwords/components/btn_level.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
@@ -22,6 +25,10 @@ class GameController extends BaseGame with KeyboardEvents {
   List<Rain> words = [];
   View activeView = View.home;
   HomeView homeView;
+  LevelView levelView;
+
+  StartButton startButton;
+  BtnLevel btnLevel;
 
   GameController() {
     initialize();
@@ -29,9 +36,12 @@ class GameController extends BaseGame with KeyboardEvents {
 
   void initialize() async {
     words = List<Rain>();
-
+    random = Random();
+    resize(Size.zero);
     homeView = HomeView(this);
-    resize(await Flame.util.initialDimensions());
+    startButton = StartButton(this);
+    btnLevel = BtnLevel(this);
+    levelView = LevelView(this);
 
     generateAWord();
   }
@@ -45,9 +55,13 @@ class GameController extends BaseGame with KeyboardEvents {
 
   @override
   void render(Canvas c) {
-    if (activeView != View.home) {
-      homeView.render(c);
+    if (activeView == View.home) homeView.render(c);
+    if (activeView == View.home) {
+      startButton.render(c);
       SystemChannels.textInput.invokeMethod('TextInput.hide');
+    } else if (activeView == View.level) {
+      levelView.render(c);
+      btnLevel.render(c);
     } else {
       Rect background =
           Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
@@ -103,6 +117,27 @@ class GameController extends BaseGame with KeyboardEvents {
   @override
   void resize(Size size) {
     screenSize = size;
-    tileSize = screenSize.width / 3;
+    tileSize = screenSize.width / 10;
+    startButton?.resize();
+    homeView?.resize();
+    levelView?.resize();
+    btnLevel?.resize();
+  }
+
+  void onTapDown(TapDownDetails d) {
+    bool isHandled = false;
+
+    if (!isHandled && btnLevel.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevel.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && startButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.home) {
+        startButton.onTapDown();
+        isHandled = true;
+      }
+    }
   }
 }
