@@ -7,14 +7,16 @@ import 'package:rainofwords/game_controller.dart';
 
 TextConfig regular = TextConfig(color: BasicPalette.white.color);
 TextConfig tiny = regular.withFontSize(20.0);
-const SPEED = 1;
+const SPEED = 0.2;
 
 class Rain extends TextBoxComponent {
   GameController game;
   double posX;
+  String text;
   double posY;
-  Rain(this.game, text, this.posX) : super(text, config: tiny) {
-    this.posY = 1;
+  bool complete = false;
+  Rain(this.game, text, this.posX, this.posY) : super(text, config: tiny) {
+    this.text = text;
     this.p = Position(this.posX, this.posY);
     this.setByPosition(p);
   }
@@ -27,6 +29,14 @@ class Rain extends TextBoxComponent {
   void setPosX(double x) {
     this.posX = x;
     updatePos();
+  }
+
+  void setText(String t) {
+    this.text = t;
+  }
+
+  String getText() {
+    return this.text;
   }
 
   double getPosX() {
@@ -43,7 +53,7 @@ class Rain extends TextBoxComponent {
   }
 
   bool destroy() {
-    return this.y >= 382;
+    return this.y >= 382 || this.complete;
   }
 
   @override
@@ -54,6 +64,7 @@ class Rain extends TextBoxComponent {
 
   @override
   void update(double t) {
+    super.update(t);
     this.setPosY(this.posY + SPEED);
   }
 }

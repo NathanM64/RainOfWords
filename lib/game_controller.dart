@@ -7,12 +7,13 @@ import 'package:rainofwords/components/rain.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
 import 'package:flutter/services.dart';
+import 'package:flame/keyboard.dart';
 import 'dart:math';
 import 'package:rainofwords/components/word_list.dart';
 
-const SPEED = 0.1;
+const SPEED = 0;
 
-class GameController extends BaseGame {
+class GameController extends BaseGame with KeyboardEvents {
   Size screenSize;
   double tileSize;
   double createWordTimer = 0;
@@ -38,7 +39,7 @@ class GameController extends BaseGame {
   void generateAWord() {
     random = Random();
     double randomX = random.nextDouble() * (screenSize.width - tileSize);
-    word = Rain(this, getRandomWord().toUpperCase(), randomX);
+    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
     words.add(word);
   }
 
@@ -58,6 +59,31 @@ class GameController extends BaseGame {
         c.save();
       });
       SystemChannels.textInput.invokeMethod('TextInput.show');
+    }
+  }
+
+  @override
+  void onKeyEvent(e) {
+    final bool isKeyDown = e is RawKeyDownEvent;
+    String letter = "${e.data.keyLabel}";
+    letter = letter.toUpperCase();
+    if (isKeyDown) {
+      print(letter);
+      words.forEach((word) {
+        String textWord = word.getText();
+        if (textWord[0] == letter) {
+          letter = '';
+          while (textWord.length > 1) {
+            if (textWord.length > 1) {
+              Rain wordReplacement =
+                  Rain(this, word.text.substring(1), word.posX, word.posY);
+              words.add(wordReplacement);
+            }
+            words.remove(word);
+            print(word.text);
+          }
+        }
+      });
     }
   }
 
