@@ -7,6 +7,7 @@ import 'package:rainofwords/components/rain.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/views/view-home.dart';
 import 'package:rainofwords/views/view-level.dart';
+import 'package:rainofwords/views/view-playing.dart';
 import 'package:rainofwords/components/start_button.dart';
 import 'package:rainofwords/components/btn_level.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ class GameController extends Game {
   View activeView = View.home;
   HomeView homeView;
   LevelView levelView;
+  PlayingView playingView;
 
   StartButton startButton;
   BtnLevel btnLevel;
@@ -41,6 +43,7 @@ class GameController extends Game {
     startButton = StartButton(this);
     btnLevel = BtnLevel(this);
     levelView = LevelView(this);
+    playingView = PlayingView(this);
 
     generateAWord();
   }
@@ -62,10 +65,7 @@ class GameController extends Game {
       levelView.render(c);
       btnLevel.render(c);
     } else {
-      Rect background =
-          Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
-      Paint backgroundPaint = Paint()..color = Color(0xff17555f);
-      c.drawRect(background, backgroundPaint);
+      playingView.render(c);
       words.forEach((word) {
         word.render(c);
         c.restore();
@@ -94,6 +94,7 @@ class GameController extends Game {
     tileSize = screenSize.width / 10;
     startButton?.resize();
     homeView?.resize();
+    playingView?.resize();
     levelView?.resize();
     btnLevel?.resize();
   }
