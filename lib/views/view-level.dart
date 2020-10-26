@@ -1,5 +1,4 @@
 import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:rainofwords/game_controller.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class LevelView {
         "SELECTIONNE \nTON NIVEAU :",
         Position(
           game.tileSize * 2.5,
-          (game.screenSize.height * 0.6) - (game.tileSize * 9),
+          (game.screenSize.height * 0.65) - (game.tileSize * 9),
         ));
   }
 

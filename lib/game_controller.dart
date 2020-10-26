@@ -1,3 +1,4 @@
+import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -125,11 +126,24 @@ class GameController extends Game {
   void onTapDown(TapDownDetails d) {
     bool isHandled = false;
 
-    if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition) ||
-        btnLevelFarm.rect.contains(d.globalPosition)) {
+    if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition)) {
       if (activeView == View.level) {
         btnLevelBlue.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelFarm.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
         btnLevelFarm.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelNight.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevelNight.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelRocky.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevelRocky.onTapDown();
         isHandled = true;
       }
     }
