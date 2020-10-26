@@ -3,13 +3,16 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:rainofwords/components/rain.dart';
-import 'package:rainofwords/view.dart';
-import 'package:rainofwords/views/view-home.dart';
-import 'package:rainofwords/views/view-level.dart';
-import 'package:rainofwords/views/view-playing.dart';
-import 'package:rainofwords/components/start_button.dart';
-import 'package:rainofwords/components/btn_level.dart';
+import 'components/rain.dart';
+import 'view.dart';
+import 'views/view-home.dart';
+import 'views/view-level.dart';
+import 'views/view-playing.dart';
+import 'components/start_button.dart';
+import 'components/levels/btn_level_blue.dart';
+import 'components/levels/btn_level_farm.dart';
+import 'components/levels/btn_level_night.dart';
+import 'components/levels/btn_level_rocky.dart';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:rainofwords/components/word_list.dart';
@@ -28,8 +31,12 @@ class GameController extends Game {
   LevelView levelView;
   PlayingView playingView;
 
+// Buttons
   StartButton startButton;
-  BtnLevel btnLevel;
+  BtnLevelBlue btnLevelBlue;
+  BtnLevelFarm btnLevelFarm;
+  BtnLevelNight btnLevelNight;
+  BtnLevelRocky btnLevelRocky;
 
   GameController() {
     initialize();
@@ -41,7 +48,10 @@ class GameController extends Game {
     resize(Size.zero);
     homeView = HomeView(this);
     startButton = StartButton(this);
-    btnLevel = BtnLevel(this);
+    btnLevelBlue = BtnLevelBlue(this);
+    btnLevelFarm = BtnLevelFarm(this);
+    btnLevelNight = BtnLevelNight(this);
+    btnLevelRocky = BtnLevelRocky(this);
     levelView = LevelView(this);
     playingView = PlayingView(this);
 
@@ -63,7 +73,10 @@ class GameController extends Game {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     } else if (activeView == View.level) {
       levelView.render(c);
-      btnLevel.render(c);
+      btnLevelBlue.render(c);
+      btnLevelFarm.render(c);
+      btnLevelNight.render(c);
+      btnLevelRocky.render(c);
     } else {
       playingView.render(c);
       words.forEach((word) {
@@ -96,15 +109,20 @@ class GameController extends Game {
     homeView?.resize();
     playingView?.resize();
     levelView?.resize();
-    btnLevel?.resize();
+    btnLevelBlue?.resize();
+    btnLevelFarm?.resize();
+    btnLevelNight?.resize();
+    btnLevelRocky?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
     bool isHandled = false;
 
-    if (!isHandled && btnLevel.rect.contains(d.globalPosition)) {
+    if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition) ||
+        btnLevelFarm.rect.contains(d.globalPosition)) {
       if (activeView == View.level) {
-        btnLevel.onTapDown();
+        btnLevelBlue.onTapDown();
+        btnLevelFarm.onTapDown();
         isHandled = true;
       }
     }

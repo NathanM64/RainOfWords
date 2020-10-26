@@ -3,15 +3,15 @@ import 'package:flame/sprite.dart';
 import 'package:rainofwords/game_controller.dart';
 import 'package:rainofwords/view.dart';
 
-class BtnLevel {
+class BtnLevelRocky {
   final GameController game;
   Rect rect;
   Sprite sprite;
   // Paint btnPaint;
 
-  BtnLevel(this.game) {
+  BtnLevelRocky(this.game) {
     resize();
-    sprite = Sprite('Backg/rocky_mountain.png');
+    sprite = Sprite('4thLevelBackg.png');
     // btnPaint = Paint()..color = Color(0xff17555f);
   }
 
@@ -25,7 +25,7 @@ class BtnLevel {
   void resize() {
     rect = Rect.fromLTWH(
         game.tileSize * 1.2,
-        (game.screenSize.height * .15) - (game.tileSize * 1.5),
+        (game.screenSize.height * .9) - (game.tileSize * 1.5),
         game.tileSize * 8,
         game.tileSize * 2);
   }
