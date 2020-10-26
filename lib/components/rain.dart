@@ -69,8 +69,8 @@ class Rain extends TextBoxComponent {
   void drawBackground(Canvas c) {
     Rect rect = Rect.fromLTWH(0, 0, width, height);
     RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(15));
-      var path = Path();
-      path.addRRect(rrect);
+    var path = Path();
+    path.addRRect(rrect);
 
     c.drawPath(path, Paint()..color = Color(0xFFFFFFFF));
     // c.drawShadow(path, Color(0xFF000000), 2, false);
@@ -79,5 +79,6 @@ class Rain extends TextBoxComponent {
   @override
   void update(double t) {
     this.setPosY(this.posY + SPEED);
+    if (this.getText() == '' && !this.getStatus()) this.complete = true;
   }
 }

@@ -120,7 +120,6 @@ class GameController extends BaseGame with KeyboardEvents {
           words.removeAt(indexWord);
           words.replaceRange(indexWord, indexWord, [wordReplacement]);
           if (wordReplacement.getText().length == 0) indexWord = -1;
-          print(indexWord);
         }
       }
     }
