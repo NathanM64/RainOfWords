@@ -26,6 +26,8 @@ class GameController extends BaseGame with KeyboardEvents {
   View activeView = View.home;
   HomeView homeView;
   LevelView levelView;
+  bool lockedWord = null;
+  int indexWord = -1;
 
   StartButton startButton;
   BtnLevel btnLevel;
@@ -68,9 +70,11 @@ class GameController extends BaseGame with KeyboardEvents {
       Paint backgroundPaint = Paint()..color = Color(0xff17555f);
       c.drawRect(background, backgroundPaint);
       words.forEach((word) {
-        word.render(c);
-        c.restore();
-        c.save();
+        if (!word.destroy()) {
+          word.render(c);
+          c.restore();
+          c.save();
+        }
       });
       SystemChannels.textInput.invokeMethod('TextInput.show');
     }
@@ -81,23 +85,23 @@ class GameController extends BaseGame with KeyboardEvents {
     final bool isKeyDown = e is RawKeyDownEvent;
     String letter = "${e.data.keyLabel}";
     letter = letter.toUpperCase();
+    Rain wordReplacement;
     if (isKeyDown) {
-      print(letter);
-      words.forEach((word) {
-        String textWord = word.getText();
-        if (textWord[0] == letter) {
-          letter = '';
-          while (textWord.length > 1) {
-            if (textWord.length > 1) {
-              Rain wordReplacement =
-                  Rain(this, word.text.substring(1), word.posX, word.posY);
-              words.add(wordReplacement);
-            }
-            words.remove(word);
-            print(word.text);
-          }
+      if (indexWord == -1) {
+        indexWord =
+            words.indexWhere((word) => word.getText().startsWith(letter));
+      }
+      if (indexWord != -1) {
+        word = words.elementAt(indexWord);
+        if (word.getText().startsWith(letter)) {
+          wordReplacement =
+              new Rain(this, word.text.substring(1), word.posX, word.posY);
+          words.removeAt(indexWord);
+          words.replaceRange(indexWord, indexWord, [wordReplacement]);
+          if (wordReplacement.getText().length == 0) indexWord = -1;
+          print(indexWord);
         }
-      });
+      }
     }
   }
 
@@ -108,9 +112,12 @@ class GameController extends BaseGame with KeyboardEvents {
       this.createWordTimer = 0;
       generateAWord();
     }
+    if (indexWord != -1 && words.elementAt(indexWord).getText() == '')
+      indexWord = -1;
+
     words.forEach((word) => word.update(t));
-    words.removeWhere((word) {
-      return word.destroy();
+    words.forEach((word) {
+      if (word.destroy()) word.setText('');
     });
   }
 

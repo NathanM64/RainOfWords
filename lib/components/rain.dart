@@ -4,7 +4,7 @@ import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 import 'package:rainofwords/game_controller.dart';
 
-TextConfig regular = TextConfig(color: Color(0xFF0D1D3E), fontFamily: 'Chlakh');
+TextConfig regular = TextConfig(color: Color(0xFF000000), fontFamily: 'Chlakh');
 TextConfig tiny = regular.withFontSize(34.0);
 const SPEED = 1;
 
@@ -13,11 +13,20 @@ class Rain extends TextBoxComponent {
   double posX;
   String text;
   double posY;
+  bool isLocked;
   bool complete = false;
   Rain(this.game, text, this.posX, this.posY) : super(text, config: tiny) {
     this.text = text;
+    this.isLocked = false;
     this.p = Position(this.posX, this.posY);
     this.setByPosition(p);
+  }
+  void lock() {
+    this.isLocked = true;
+  }
+
+  bool getStatus() {
+    return this.isLocked;
   }
 
   void setPosY(double y) {
@@ -63,7 +72,6 @@ class Rain extends TextBoxComponent {
 
   @override
   void update(double t) {
-    super.update(t);
     this.setPosY(this.posY + SPEED);
   }
 }
