@@ -11,7 +11,7 @@ class StartButton {
   Rect rect;
   Sprite sprite;
   TextConfig titleHome = TextConfig(
-      color: Color(0xFF0D1D3E), fontSize: 45.0, fontFamily: 'Chlakh');
+      color: Color(0xFF0D1D3E), fontSize: 60.0, fontFamily: 'Chlakh');
 
   StartButton(this.game) {
     resize();
@@ -26,8 +26,8 @@ class StartButton {
         c,
         "Jouer",
         Position(
-          game.tileSize * 3.5,
-          (game.screenSize.height * 0.67) - (game.tileSize * 1.5),
+          game.tileSize * 3.25,
+          (game.screenSize.height * 0.77) - (game.tileSize * 1.75),
         ));
   }
 
@@ -36,7 +36,7 @@ class StartButton {
   void resize() {
     rect = Rect.fromLTWH(
         game.tileSize * 1,
-        (game.screenSize.height * .60) - (game.tileSize * 1.5),
+        (game.screenSize.height * .70) - (game.tileSize * 1.5),
         game.tileSize * 8,
         game.tileSize * 4);
   }

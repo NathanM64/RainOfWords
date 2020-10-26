@@ -9,7 +9,7 @@ class HomeView {
   final GameController game;
   Rect homeRect;
   Sprite homeSprite;
-  TextConfig titleHome = TextConfig(fontSize: 72, fontFamily: 'Awesome Font');
+  TextConfig titleHome = TextConfig(fontSize: 90, fontFamily: 'Quando', textAlign: TextAlign.center, color : Color(0xFF0D1D3E));
 
   HomeView(this.game) {
     resize();
@@ -20,10 +20,10 @@ class HomeView {
     homeSprite.renderRect(c, homeRect);
     titleHome.render(
         c,
-        "Rain\n  of\nWords",
+        "Rain\nof\nWords",
         Position(
-          game.tileSize * 2.5,
-          (game.screenSize.height * 0.6) - (game.tileSize * 9),
+          game.tileSize * 1,
+          (game.screenSize.height * 0.6) - (game.tileSize * 10),
         ));
   }
 
