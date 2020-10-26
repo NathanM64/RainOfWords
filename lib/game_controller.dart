@@ -67,7 +67,7 @@ class GameController extends Game {
 
   void generateAWord() {
     random = Random();
-    double randomX = random.nextDouble() * (screenSize.width - (word.width - 1));
+    double randomX = random.nextDouble() * (screenSize.width - (word.width + 2));
     word = Rain(this, getRandomWord().toUpperCase(), randomX);
     words.add(word);
   }
