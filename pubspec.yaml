@@ -65,6 +65,9 @@ flutter:
     - family: Chlakh
       fonts: 
         - asset: assets/Chlakh.ttf
+    - family: Quando
+      fonts: 
+        - asset: assets/Quando.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

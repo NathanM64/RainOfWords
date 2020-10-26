@@ -1,14 +1,19 @@
+import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:rainofwords/components/rain.dart';
-import 'package:rainofwords/view.dart';
-import 'package:rainofwords/views/view-home.dart';
-import 'package:rainofwords/views/view-level.dart';
-import 'package:rainofwords/components/start_button.dart';
-import 'package:rainofwords/components/btn_level.dart';
+import 'components/rain.dart';
+import 'view.dart';
+import 'views/view-home.dart';
+import 'views/view-level.dart';
+import 'views/view-playing.dart';
+import 'components/start_button.dart';
+import 'components/levels/btn_level_blue.dart';
+import 'components/levels/btn_level_farm.dart';
+import 'components/levels/btn_level_night.dart';
+import 'components/levels/btn_level_rocky.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
@@ -26,11 +31,15 @@ class GameController extends BaseGame with KeyboardEvents {
   View activeView = View.home;
   HomeView homeView;
   LevelView levelView;
-  bool lockedWord = null;
   int indexWord = -1;
+  PlayingView playingView;
 
+// Buttons
   StartButton startButton;
-  BtnLevel btnLevel;
+  BtnLevelBlue btnLevelBlue;
+  BtnLevelFarm btnLevelFarm;
+  BtnLevelNight btnLevelNight;
+  BtnLevelRocky btnLevelRocky;
 
   GameController() {
     initialize();
@@ -42,15 +51,27 @@ class GameController extends BaseGame with KeyboardEvents {
     resize(Size.zero);
     homeView = HomeView(this);
     startButton = StartButton(this);
-    btnLevel = BtnLevel(this);
+    btnLevelBlue = BtnLevelBlue(this);
+    btnLevelFarm = BtnLevelFarm(this);
+    btnLevelNight = BtnLevelNight(this);
+    btnLevelRocky = BtnLevelRocky(this);
     levelView = LevelView(this);
+    playingView = PlayingView(this);
 
-    generateAWord();
+    generateFirstWord();
+  }
+
+  void generateFirstWord() {
+    random = Random();
+    double randomX = random.nextDouble() * (screenSize.width - (tileSize * 4));
+    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
+    words.add(word);
   }
 
   void generateAWord() {
     random = Random();
-    double randomX = random.nextDouble() * (screenSize.width - tileSize);
+    double randomX =
+        random.nextDouble() * (screenSize.width - (word.width + 2));
     word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
     words.add(word);
   }
@@ -63,12 +84,12 @@ class GameController extends BaseGame with KeyboardEvents {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     } else if (activeView == View.level) {
       levelView.render(c);
-      btnLevel.render(c);
+      btnLevelBlue.render(c);
+      btnLevelFarm.render(c);
+      btnLevelNight.render(c);
+      btnLevelRocky.render(c);
     } else {
-      Rect background =
-          Rect.fromLTWH(0, 0, screenSize.width, screenSize.height);
-      Paint backgroundPaint = Paint()..color = Color(0xff17555f);
-      c.drawRect(background, backgroundPaint);
+      playingView.render(c);
       words.forEach((word) {
         if (!word.destroy()) {
           word.render(c);
@@ -127,16 +148,35 @@ class GameController extends BaseGame with KeyboardEvents {
     tileSize = screenSize.width / 10;
     startButton?.resize();
     homeView?.resize();
+    playingView?.resize();
     levelView?.resize();
-    btnLevel?.resize();
+    btnLevelBlue?.resize();
+    btnLevelFarm?.resize();
+    btnLevelNight?.resize();
+    btnLevelRocky?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
     bool isHandled = false;
 
-    if (!isHandled && btnLevel.rect.contains(d.globalPosition)) {
+    if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition)) {
       if (activeView == View.level) {
-        btnLevel.onTapDown();
+        btnLevelBlue.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelFarm.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevelFarm.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelNight.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevelNight.onTapDown();
+        isHandled = true;
+      }
+    } else if (btnLevelRocky.rect.contains(d.globalPosition)) {
+      if (activeView == View.level) {
+        btnLevelRocky.onTapDown();
         isHandled = true;
       }
     }
