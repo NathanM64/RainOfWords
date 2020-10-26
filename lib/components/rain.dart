@@ -1,12 +1,12 @@
 import 'dart:ui';
-import 'package:flame/palette.dart';
 import 'package:flame/components/text_box_component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
+import 'package:flutter/material.dart';
 import 'package:rainofwords/game_controller.dart';
 
-TextConfig regular = TextConfig(color: BasicPalette.white.color);
-TextConfig tiny = regular.withFontSize(20.0);
+TextConfig regular = TextConfig(color : Color(0xFF0D1D3E), fontFamily: 'Chlakh');
+TextConfig tiny = regular.withFontSize(34.0);
 const SPEED = 1;
 
 class Rain extends TextBoxComponent {
@@ -49,7 +49,12 @@ class Rain extends TextBoxComponent {
   @override
   void drawBackground(Canvas c) {
     Rect rect = Rect.fromLTWH(0, 0, width, height);
-    c.drawRect(rect, Paint()..color = Color(0xFFFF00FF).withOpacity(0));
+    RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(15));
+      var path = Path();
+      path.addRRect(rrect);
+
+    c.drawPath(path, Paint()..color = Color(0xFFFFFFFF));
+    // c.drawShadow(path, Color(0xFF000000), 2, false);
   }
 
   @override

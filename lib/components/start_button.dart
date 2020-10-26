@@ -10,7 +10,8 @@ class StartButton {
   final GameController game;
   Rect rect;
   Sprite sprite;
-  TextConfig titleHome = TextConfig(fontSize: 45.0, fontFamily: 'Awesome Font');
+  TextConfig titleHome = TextConfig(
+      color: Color(0xFF0D1D3E), fontSize: 45.0, fontFamily: 'Chlakh');
 
   StartButton(this.game) {
     resize();
