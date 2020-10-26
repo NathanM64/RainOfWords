@@ -55,13 +55,20 @@ class GameController extends Game {
     levelView = LevelView(this);
     playingView = PlayingView(this);
 
-    generateAWord();
+    generateFirstWord();
+  }
+
+  void generateFirstWord() {
+        random = Random();
+    double randomX = random.nextDouble() * (screenSize.width - (tileSize * 4));
+    word = Rain(this, getRandomWord().toUpperCase(), randomX);
+    words.add(word);
   }
 
   void generateAWord() {
     random = Random();
-    double randomX = random.nextDouble() * (screenSize.width - tileSize);
-    word = Rain(this, getRandomWord().toUpperCase(), randomX);
+    double randomX = random.nextDouble() * (screenSize.width - (word.width - 1));
+    word = Rain(this, "getRandomWord().toUpperCase()", randomX);
     words.add(word);
   }
 
