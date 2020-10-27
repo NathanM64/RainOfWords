@@ -1,4 +1,3 @@
-import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +13,7 @@ import 'components/levels/btn_level_blue.dart';
 import 'components/levels/btn_level_farm.dart';
 import 'components/levels/btn_level_night.dart';
 import 'components/levels/btn_level_rocky.dart';
+import 'components/btn-pause.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
@@ -40,6 +40,7 @@ class GameController extends BaseGame with KeyboardEvents {
   BtnLevelFarm btnLevelFarm;
   BtnLevelNight btnLevelNight;
   BtnLevelRocky btnLevelRocky;
+  BtnPause btnPause;
 
   GameController() {
     initialize();
@@ -55,6 +56,7 @@ class GameController extends BaseGame with KeyboardEvents {
     btnLevelFarm = BtnLevelFarm(this);
     btnLevelNight = BtnLevelNight(this);
     btnLevelRocky = BtnLevelRocky(this);
+    btnPause = BtnPause(this);
     levelView = LevelView(this);
     playingView = PlayingView(this);
 
@@ -70,7 +72,8 @@ class GameController extends BaseGame with KeyboardEvents {
 
   void generateAWord() {
     random = Random();
-    double randomX = random.nextDouble() * (screenSize.width - (word.width + 2));
+    double randomX =
+        random.nextDouble() * (screenSize.width - (word.width + 2));
     word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
     words.add(word);
   }
@@ -96,6 +99,7 @@ class GameController extends BaseGame with KeyboardEvents {
           c.save();
         }
       });
+      btnPause.render(c);
       SystemChannels.textInput.invokeMethod('TextInput.show');
     }
   }
@@ -152,6 +156,7 @@ class GameController extends BaseGame with KeyboardEvents {
     btnLevelFarm?.resize();
     btnLevelNight?.resize();
     btnLevelRocky?.resize();
+    btnPause?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
@@ -181,6 +186,12 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && startButton.rect.contains(d.globalPosition)) {
       if (activeView == View.home) {
         startButton.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && btnPause.rect.contains(d.globalPosition)) {
+      if (activeView == View.playing) {
+        btnPause.onTapDown();
         isHandled = true;
       }
     }
