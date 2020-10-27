@@ -73,7 +73,6 @@ class Rain extends TextBoxComponent {
     path.addRRect(rrect);
 
     c.drawPath(path, Paint()..color = Color(0xFFFFFFFF));
-    // c.drawShadow(path, Color(0xFF000000), 2, false);
   }
 
   @override
