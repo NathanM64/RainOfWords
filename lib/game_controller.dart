@@ -1,3 +1,6 @@
+import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
+import 'package:flame/text_config.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +27,9 @@ const SPEED = 0;
 class GameController extends BaseGame with KeyboardEvents {
   Size screenSize;
   double tileSize;
-  double createWordTimer = 0;
+  double createWordTimer;
+  int score;
+  TextConfig displayScore;
   Rain word;
   Random random;
   List<Rain> words = [];
@@ -59,6 +64,10 @@ class GameController extends BaseGame with KeyboardEvents {
     btnPause = BtnPause(this);
     levelView = LevelView(this);
     playingView = PlayingView(this);
+    createWordTimer = 0;
+    score = 0;
+    displayScore = TextConfig(
+        color: Color(0xFF0D1D3E), fontSize: 30.0, fontFamily: 'Chlakh');
 
     generateFirstWord();
   }
@@ -93,13 +102,15 @@ class GameController extends BaseGame with KeyboardEvents {
     } else {
       playingView.render(c);
       words.forEach((word) {
-        if (!word.destroy()) {
+        if (!word.destroyed()) {
           word.render(c);
           c.restore();
           c.save();
         }
       });
       btnPause.render(c);
+      displayScore.render(c, "Score: ${score}", Position(5, 5));
+
       SystemChannels.textInput.invokeMethod('TextInput.show');
     }
   }
@@ -122,7 +133,11 @@ class GameController extends BaseGame with KeyboardEvents {
               new Rain(this, word.text.substring(1), word.posX, word.posY);
           words.removeAt(indexWord);
           words.replaceRange(indexWord, indexWord, [wordReplacement]);
-          if (wordReplacement.getText().length == 0) indexWord = -1;
+          if (wordReplacement.getText().length == 0) {
+            words.elementAt(indexWord).complete();
+            indexWord = -1;
+            score += 10;
+          }
         }
       }
     }
@@ -140,7 +155,12 @@ class GameController extends BaseGame with KeyboardEvents {
 
     words.forEach((word) => word.update(t));
     words.forEach((word) {
-      if (word.destroy()) word.setText('');
+      if (word.destroyed()) {
+        word.setText('');
+        if (word.destroyed() && !word.getStatus()) {
+          score -= 50;
+        }
+      }
     });
   }
 
