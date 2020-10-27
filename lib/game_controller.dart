@@ -78,8 +78,7 @@ class GameController extends BaseGame with KeyboardEvents {
 
   void generateAWord() {
     random = Random();
-    double randomX =
-        random.nextDouble() * (screenSize.width - (word.width + 2));
+    double randomX = random.nextDouble() * (screenSize.width - (word.width + 2));
     word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
     words.add(word);
   }
