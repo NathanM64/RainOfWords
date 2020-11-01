@@ -14,20 +14,19 @@ class Rain extends TextBoxComponent {
   double posX;
   String text;
   double posY;
-  bool isLocked;
-  bool complete = false;
+  bool isComplete;
   Rain(this.game, text, this.posX, this.posY) : super(text, config: tiny) {
     this.text = text;
-    this.isLocked = false;
     this.p = Position(this.posX, this.posY);
     this.setByPosition(p);
+    this.isComplete = false;
   }
-  void lock() {
-    this.isLocked = true;
+  void complete() {
+    this.isComplete = true;
   }
 
   bool getStatus() {
-    return this.isLocked;
+    return this.isComplete;
   }
 
   void setPosY(double y) {
@@ -61,8 +60,8 @@ class Rain extends TextBoxComponent {
     this.setByPosition(p);
   }
 
-  bool destroy() {
-    return this.y >= 382 || this.complete;
+  bool destroyed() {
+    return this.y >= 382 || this.isComplete;
   }
 
   @override
@@ -77,7 +76,9 @@ class Rain extends TextBoxComponent {
 
   @override
   void update(double t) {
-    this.setPosY(this.posY + SPEED);
-    if (this.getText() == '' && !this.getStatus()) this.complete = true;
+    if (!this.destroyed()) {
+      this.setPosY(this.posY + SPEED);
+    }
+    if (this.getText() == '' && !this.getStatus()) this.isComplete = true;
   }
 }
