@@ -80,12 +80,26 @@ class GameController extends BaseGame with KeyboardEvents {
   }
 
   void generateAWord() {
-    random = Random();
-    double randomX =
-        random.nextDouble() * (screenSize.width - (word.width + 2));
-    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
+    word = Rain(this, getRandomWord().toUpperCase(), getWordWidth(word), 1);
     words.add(word);
   }
+
+  double getWordWidth(Rain aWord) {
+    double boxLen = aWord.width;
+    double screen = screenSize.width.truncateToDouble() - 1;
+    int position = random.nextInt(screenSize.width.toInt() - (screenSize.width.toInt() / 2).truncate());
+    random = Random();
+    double posPbox = position + boxLen + 10;
+
+  // Solution temporaire -- Besoin de réécrire le update
+    if ( position > 0 && posPbox <= screen )  {
+      return position.truncateToDouble();
+    } else if (posPbox > screen) {
+      return 50;
+    } else {
+      return 20;
+    }
+ }
 
   @override
   void render(Canvas c) {
