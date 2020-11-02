@@ -358,6 +358,8 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && replayButton.rect.contains(d.globalPosition)) {
       if (activeView == View.score) {
         replayButton.onTapDown();
+      }
+    }
     if (!isHandled && btnGame.rect.contains(d.globalPosition)) {
       if (activeView == View.playing) {
         btnGame.onTapDown();
@@ -371,6 +373,4 @@ class GameController extends BaseGame with KeyboardEvents {
       }
     }
   }
-}
-}
 }
