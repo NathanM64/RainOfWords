@@ -290,7 +290,7 @@ class GameController extends BaseGame with KeyboardEvents {
     replayButton?.resize();
     homeView?.resize();
     scoreView?.resize();
-    playingView?.resize();
+    // playingView?.resize();
     // Vies
     life?.resize();
     life2?.resize();
@@ -371,4 +371,6 @@ class GameController extends BaseGame with KeyboardEvents {
       }
     }
   }
+}
+}
 }
