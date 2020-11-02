@@ -3,4 +3,5 @@ enum View {
   level,
   playing,
   lost,
+  score
 }
