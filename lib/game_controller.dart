@@ -29,6 +29,7 @@ import 'components/life/life3.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
+import 'package:flame/flame.dart';
 import 'dart:math';
 import 'package:rainofwords/components/word_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,6 +90,7 @@ class GameController extends BaseGame with KeyboardEvents {
   }
 
   void initialize() async {
+    Flame.audio.playLongAudio('rain.mp3');
     words = List<Rain>();
     random = Random();
     resize(Size.zero);
