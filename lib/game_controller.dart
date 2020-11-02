@@ -18,7 +18,9 @@ import 'components/levels/btn_level_blue.dart';
 import 'components/levels/btn_level_farm.dart';
 import 'components/levels/btn_level_night.dart';
 import 'components/levels/btn_level_rocky.dart';
-import 'components/btn-pause.dart';
+import 'components/pause/pause-rect.dart';
+import 'components/pause/btn-game.dart';
+import 'components/pause/btn-pause.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
@@ -39,6 +41,10 @@ class GameController extends BaseGame with KeyboardEvents {
   Rain word;
   Random random;
   List<Rain> words = [];
+  int indexWord = -1;
+  bool onLevelBlue = false;
+
+// Views
   ScoreDisplay scoreDisplay;
 
   View activeView = View.home;
@@ -55,6 +61,8 @@ class GameController extends BaseGame with KeyboardEvents {
   BtnLevelNight btnLevelNight;
   BtnLevelRocky btnLevelRocky;
   BtnPause btnPause;
+  PauseRect pauseRect;
+  BtnGame btnGame;
 
   GameController(this.storage) {
     initialize();
@@ -71,6 +79,8 @@ class GameController extends BaseGame with KeyboardEvents {
     btnLevelNight = BtnLevelNight(this);
     btnLevelRocky = BtnLevelRocky(this);
     btnPause = BtnPause(this);
+    pauseRect = PauseRect(this);
+    btnGame = BtnGame(this);
     scoreDisplay = ScoreDisplay(this);
 
     levelView = LevelView(this);
@@ -93,6 +103,10 @@ class GameController extends BaseGame with KeyboardEvents {
   }
 
   void generateAWord() {
+    random = Random();
+    double randomX =
+        random.nextDouble() * (screenSize.width - (word.width + 2));
+    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
     word = Rain(this, getRandomWord().toUpperCase(), getWordWidth(word), 1);
     words.add(word);
   }
@@ -129,8 +143,7 @@ class GameController extends BaseGame with KeyboardEvents {
       btnLevelRocky.render(c);
     } else {
       playingView.render(c);
-      if (activeView == View.playing) scoreDisplay.render(c);
-
+      SystemChannels.textInput.invokeMethod('TextInput.show');
       words.forEach((word) {
         if (!word.destroyed()) {
           word.render(c);
@@ -138,13 +151,17 @@ class GameController extends BaseGame with KeyboardEvents {
           c.save();
         }
       });
-
-      btnPause.render(c);
-      SystemChannels.textInput.invokeMethod('TextInput.show');
+      if (runOnCreation == true) {
+        btnPause.render(c);
+        displayScore.render(c, "Score: ${score}", Position(5, 5));
+      } else {
+        pauseRect.render(c);
+        btnGame.render(c);
+        pauseEngine();
+      }
     }
   }
 
-  @override
   void onKeyEvent(e) {
     final bool isKeyDown = e is RawKeyDownEvent;
     String letter = "${e.data.keyLabel}";
@@ -207,6 +224,8 @@ class GameController extends BaseGame with KeyboardEvents {
     btnLevelNight?.resize();
     btnLevelRocky?.resize();
     btnPause?.resize();
+    pauseRect?.resize();
+    btnGame?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
@@ -215,6 +234,7 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition)) {
       if (activeView == View.level) {
         btnLevelBlue.onTapDown();
+        onLevelBlue = true;
         isHandled = true;
       }
     } else if (btnLevelFarm.rect.contains(d.globalPosition)) {
@@ -242,6 +262,12 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && btnPause.rect.contains(d.globalPosition)) {
       if (activeView == View.playing) {
         btnPause.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && btnGame.rect.contains(d.globalPosition)) {
+      if (activeView == View.playing) {
+        btnGame.onTapDown();
         isHandled = true;
       }
     }

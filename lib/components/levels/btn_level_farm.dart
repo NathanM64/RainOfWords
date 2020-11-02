@@ -49,6 +49,5 @@ class BtnLevelFarm {
     game.activeView = View.playing;
     game.score = 0;
     game.words.removeRange(0, game.words.length);
-    print('Bien joué');
   }
 }
