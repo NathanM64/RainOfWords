@@ -52,8 +52,6 @@ class GameController extends BaseGame with KeyboardEvents {
   LevelView levelView;
   PlayingView playingView;
 
-  int indexWord = -1;
-
 // Buttons
   StartButton startButton;
   BtnLevelBlue btnLevelBlue;
@@ -88,9 +86,6 @@ class GameController extends BaseGame with KeyboardEvents {
 
     createWordTimer = 0;
     score = 0;
-
-    // displayScore = TextConfig(
-    //     color: Color(0xFF0D1D3E), fontSize: 30.0, fontFamily: 'Chlakh');
 
     generateFirstWord();
   }
@@ -153,7 +148,8 @@ class GameController extends BaseGame with KeyboardEvents {
       });
       if (runOnCreation == true) {
         btnPause.render(c);
-        displayScore.render(c, "Score: ${score}", Position(5, 5));
+        if (activeView == View.playing || activeView == View.lost)
+          scoreDisplay.render(c);
       } else {
         pauseRect.render(c);
         btnGame.render(c);
