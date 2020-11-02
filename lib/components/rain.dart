@@ -15,7 +15,9 @@ class Rain extends TextBoxComponent {
   String text;
   double posY;
   bool isComplete;
-  Rain(this.game, text, this.posX, this.posY) : super(text, config: tiny) {
+  double speedUp;
+  Rain(this.game, text, this.posX, this.posY, this.speedUp)
+      : super(text, config: tiny) {
     this.text = text;
     this.p = Position(this.posX, this.posY);
     this.setByPosition(p);
@@ -64,6 +66,10 @@ class Rain extends TextBoxComponent {
     return this.y >= 382 || this.isComplete;
   }
 
+  void faster(double speed) {
+    this.speedUp += speed;
+  }
+
   @override
   void drawBackground(Canvas c) {
     Rect rect = Rect.fromLTWH(0, 0, width, height);
@@ -77,7 +83,7 @@ class Rain extends TextBoxComponent {
   @override
   void update(double t) {
     if (!this.destroyed()) {
-      this.setPosY(this.posY + SPEED);
+      this.setPosY(this.posY + SPEED + this.speedUp);
     }
     if (this.getText() == '' && !this.getStatus()) this.isComplete = true;
   }

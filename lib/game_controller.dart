@@ -35,10 +35,12 @@ class GameController extends BaseGame with KeyboardEvents {
   Size screenSize;
   double tileSize;
 
+  double speedUpTimer;
   double createWordTimer;
   int score;
   TextConfig displayScore;
   Rain word;
+  double speed;
   Random random;
   List<Rain> words = [];
   int indexWord = -1;
@@ -84,6 +86,8 @@ class GameController extends BaseGame with KeyboardEvents {
     levelView = LevelView(this);
     playingView = PlayingView(this);
 
+    speed = 0;
+    speedUpTimer = 0;
     createWordTimer = 0;
     score = 0;
 
@@ -93,7 +97,7 @@ class GameController extends BaseGame with KeyboardEvents {
   void generateFirstWord() {
     random = Random();
     double randomX = random.nextDouble() * (screenSize.width - (tileSize * 4));
-    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
+    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1, this.speed);
     words.add(word);
   }
 
@@ -101,8 +105,9 @@ class GameController extends BaseGame with KeyboardEvents {
     random = Random();
     double randomX =
         random.nextDouble() * (screenSize.width - (word.width + 2));
-    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1);
-    word = Rain(this, getRandomWord().toUpperCase(), getWordWidth(word), 1);
+    word = Rain(this, getRandomWord().toUpperCase(), randomX, 1, this.speed);
+    word = Rain(
+        this, getRandomWord().toUpperCase(), getWordWidth(word), 1, this.speed);
     words.add(word);
   }
 
@@ -171,8 +176,8 @@ class GameController extends BaseGame with KeyboardEvents {
       if (indexWord != -1) {
         word = words.elementAt(indexWord);
         if (word.getText().startsWith(letter)) {
-          wordReplacement =
-              new Rain(this, word.text.substring(1), word.posX, word.posY);
+          wordReplacement = new Rain(
+              this, word.text.substring(1), word.posX, word.posY, this.speed);
           words.removeAt(indexWord);
           words.replaceRange(indexWord, indexWord, [wordReplacement]);
           if (wordReplacement.getText().length == 0) {
@@ -187,6 +192,13 @@ class GameController extends BaseGame with KeyboardEvents {
 
   @override
   void update(double t) {
+    this.speedUpTimer += t;
+    if (this.speedUpTimer >= 10) {
+      this.speed += 0.2;
+      words.forEach((word) => word.faster(speed));
+      this.speedUpTimer = 0;
+    }
+
     this.createWordTimer += t;
     if (this.createWordTimer >= 2) {
       this.createWordTimer = 0;
@@ -197,12 +209,7 @@ class GameController extends BaseGame with KeyboardEvents {
 
     words.forEach((word) => word.update(t));
     words.forEach((word) {
-      if (word.destroyed()) {
-        word.setText('');
-        if (word.destroyed() && !word.getStatus()) {
-          score -= 50;
-        }
-      }
+      if (word.destroyed()) word.setText('');
     });
     if (activeView == View.playing) scoreDisplay.update(t);
   }
