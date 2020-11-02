@@ -47,6 +47,7 @@ class BtnLevelFarm {
 
   void onTapDown() {
     game.activeView = View.playing;
+    game.onLevelFarm = true;
     game.score = 0;
     game.words.removeRange(0, game.words.length);
   }

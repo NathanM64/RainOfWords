@@ -49,6 +49,7 @@ class BtnLevelRocky {
 
   void onTapDown() {
     game.activeView = View.playing;
+    game.onLevelRocky = true;
     game.score = 0;
     game.words.removeRange(0, game.words.length);
   }

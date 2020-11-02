@@ -10,7 +10,10 @@ import 'components/rain.dart';
 import 'view.dart';
 import 'views/view-home.dart';
 import 'views/view-level.dart';
-import 'views/view-playing.dart';
+import 'views/view-playing-blue.dart';
+import 'views/view-playing-farm.dart';
+import 'views/view-playing-rocky.dart';
+import 'views/view-playing-night.dart';
 import 'components/start_button.dart';
 import 'components/score-display.dart';
 
@@ -43,6 +46,9 @@ class GameController extends BaseGame with KeyboardEvents {
   List<Rain> words = [];
   int indexWord = -1;
   bool onLevelBlue = false;
+  bool onLevelNight = false;
+  bool onLevelFarm = false;
+  bool onLevelRocky = false;
 
 // Views
   ScoreDisplay scoreDisplay;
@@ -50,7 +56,10 @@ class GameController extends BaseGame with KeyboardEvents {
   View activeView = View.home;
   HomeView homeView;
   LevelView levelView;
-  PlayingView playingView;
+  PlayingViewBlue playingViewBlue;
+  PlayingViewNight playingViewNight;
+  PlayingViewFarm playingViewFarm;
+  PlayingViewRocky playingViewRocky;
 
 // Buttons
   StartButton startButton;
@@ -82,7 +91,10 @@ class GameController extends BaseGame with KeyboardEvents {
     scoreDisplay = ScoreDisplay(this);
 
     levelView = LevelView(this);
-    playingView = PlayingView(this);
+    playingViewBlue = PlayingViewBlue(this);
+    playingViewNight = PlayingViewNight(this);
+    playingViewFarm = PlayingViewFarm(this);
+    playingViewRocky = PlayingViewRocky(this);
 
     createWordTimer = 0;
     score = 0;
@@ -137,7 +149,15 @@ class GameController extends BaseGame with KeyboardEvents {
       btnLevelNight.render(c);
       btnLevelRocky.render(c);
     } else {
-      playingView.render(c);
+      if (onLevelBlue == true) {
+        playingViewBlue.render(c);
+      } else if (onLevelNight == true) {
+        playingViewNight.render(c);
+      } else if (onLevelFarm == true) {
+        playingViewFarm.render(c);
+      } else if (onLevelRocky == true) {
+        playingViewRocky.render(c);
+      }
       SystemChannels.textInput.invokeMethod('TextInput.show');
       words.forEach((word) {
         if (!word.destroyed()) {
@@ -213,7 +233,10 @@ class GameController extends BaseGame with KeyboardEvents {
     tileSize = screenSize.width / 10;
     startButton?.resize();
     homeView?.resize();
-    playingView?.resize();
+    playingViewBlue?.resize();
+    playingViewNight?.resize();
+    playingViewFarm?.resize();
+    playingViewRocky?.resize();
     levelView?.resize();
     btnLevelBlue?.resize();
     btnLevelFarm?.resize();
@@ -230,7 +253,6 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && btnLevelBlue.rect.contains(d.globalPosition)) {
       if (activeView == View.level) {
         btnLevelBlue.onTapDown();
-        onLevelBlue = true;
         isHandled = true;
       }
     } else if (btnLevelFarm.rect.contains(d.globalPosition)) {
