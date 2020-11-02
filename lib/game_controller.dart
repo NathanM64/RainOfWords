@@ -25,6 +25,9 @@ import 'components/pause/pause-rect.dart';
 import 'components/pause/btn-game.dart';
 import 'components/pause/btn-pause.dart';
 import 'components/pause/btn-menu.dart';
+import 'components/life/life.dart';
+import 'components/life/life2.dart';
+import 'components/life/life3.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
@@ -47,6 +50,9 @@ class GameController extends BaseGame with KeyboardEvents {
   Rain word;
   double speed;
   Random random;
+  Life life;
+  Life2 life2;
+  Life3 life3;
   List<Rain> words = [];
   int indexWord = -1;
   int lifes;
@@ -96,6 +102,9 @@ class GameController extends BaseGame with KeyboardEvents {
     btnGame = BtnGame(this);
     btnMenu = BtnMenu(this);
     scoreDisplay = ScoreDisplay(this);
+    life = Life(this);
+    life2 = Life2(this);
+    life3 = Life3(this);
 
     levelView = LevelView(this);
     playingViewBlue = PlayingViewBlue(this);
@@ -177,11 +186,23 @@ class GameController extends BaseGame with KeyboardEvents {
           c.save();
         }
       });
+      if (lifes == 3) {
+        life3.render(c);
+        life2.render(c);
+        life.render(c);
+      } else if (lifes == 2) {
+        life2.render(c);
+        life.render(c);
+      } else if (lifes == 1) {
+        life.render(c);
+      } else {
+        activeView = View.home;
+      }
+      // Condition Pause
       if (runOnCreation == true) {
         btnPause.render(c);
         if (activeView == View.playing || activeView == View.lost)
           scoreDisplay.render(c);
-        if (lifes == 0) activeView = View.home;
       } else {
         pauseRect.render(c);
         btnGame.render(c);
@@ -250,6 +271,9 @@ class GameController extends BaseGame with KeyboardEvents {
     tileSize = screenSize.width / 10;
     startButton?.resize();
     homeView?.resize();
+    life?.resize();
+    life2?.resize();
+    life3?.resize();
     playingViewBlue?.resize();
     playingViewNight?.resize();
     playingViewFarm?.resize();
