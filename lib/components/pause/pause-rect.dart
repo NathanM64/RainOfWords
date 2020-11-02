@@ -47,7 +47,7 @@ class PauseRect {
 
   void resize() {
     rect = Rect.fromLTWH(game.tileSize * 1, game.tileSize * 2,
-        game.tileSize * 8, game.tileSize * 8);
+        game.tileSize * 8, game.tileSize * 9);
     rRect = RRect.fromRectAndRadius(rect, Radius.circular(15));
   }
 }

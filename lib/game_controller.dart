@@ -24,6 +24,8 @@ import 'components/levels/btn_level_rocky.dart';
 import 'components/pause/pause-rect.dart';
 import 'components/pause/btn-game.dart';
 import 'components/pause/btn-pause.dart';
+import 'components/pause/btn-menu.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
@@ -72,6 +74,7 @@ class GameController extends BaseGame with KeyboardEvents {
   BtnPause btnPause;
   PauseRect pauseRect;
   BtnGame btnGame;
+  BtnMenu btnMenu;
 
   GameController(this.storage) {
     initialize();
@@ -90,6 +93,7 @@ class GameController extends BaseGame with KeyboardEvents {
     btnPause = BtnPause(this);
     pauseRect = PauseRect(this);
     btnGame = BtnGame(this);
+    btnMenu = BtnMenu(this);
     scoreDisplay = ScoreDisplay(this);
 
     levelView = LevelView(this);
@@ -178,6 +182,7 @@ class GameController extends BaseGame with KeyboardEvents {
       } else {
         pauseRect.render(c);
         btnGame.render(c);
+        btnMenu.render(c);
         pauseEngine();
       }
     }
@@ -252,6 +257,7 @@ class GameController extends BaseGame with KeyboardEvents {
     btnPause?.resize();
     pauseRect?.resize();
     btnGame?.resize();
+    btnMenu?.resize();
   }
 
   void onTapDown(TapDownDetails d) {
@@ -293,6 +299,12 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && btnGame.rect.contains(d.globalPosition)) {
       if (activeView == View.playing) {
         btnGame.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && btnMenu.rect.contains(d.globalPosition)) {
+      if (activeView == View.playing) {
+        btnMenu.onTapDown();
         isHandled = true;
       }
     }

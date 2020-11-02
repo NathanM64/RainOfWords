@@ -7,7 +7,7 @@ import 'package:rainofwords/game_controller.dart';
 import 'package:rainofwords/view.dart';
 import 'package:rainofwords/components/rain.dart';
 
-class BtnGame {
+class BtnMenu {
   final GameController game;
   Rain rain;
   Rect rect;
@@ -18,7 +18,7 @@ class BtnGame {
       textAlign: TextAlign.center,
       color: Color(0xFF0D1D3E));
 
-  BtnGame(this.game) {
+  BtnMenu(this.game) {
     resize();
     sprite = Sprite('word_bg.png');
   }
@@ -28,26 +28,30 @@ class BtnGame {
     sprite.renderRect(c, rect);
     titlePause.render(
         c,
-        "Continuer",
+        "Menu",
         Position(
-          game.tileSize * 3,
-          (game.screenSize.height * 0.94) - (game.tileSize * 10),
+          game.tileSize * 4,
+          (game.screenSize.height * 1.06) - (game.tileSize * 10),
         ));
   }
 
   void update(double t) {}
 
   void resize() {
-    rect = Rect.fromLTWH(game.tileSize * 1, game.tileSize * 5.8,
+    rect = Rect.fromLTWH(game.tileSize * 1, game.tileSize * 8,
         game.tileSize * 8, game.tileSize * 3);
   }
 
   void onTapDown() {
-    game.activeView = View.playing;
-    if (game.runOnCreation == false) {
-      game.resumeEngine();
-      print('Play');
-      game.runOnCreation = true;
-    }
+    game.activeView = View.home;
+    // if (game.runOnCreation == false) {
+    game.resumeEngine();
+    //   print('Play');
+    game.runOnCreation = true;
+    game.onLevelBlue = false;
+    game.onLevelFarm = false;
+    game.onLevelNight = false;
+    game.onLevelRocky = false;
+    // }
   }
 }
