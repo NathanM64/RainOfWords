@@ -180,6 +180,11 @@ class GameController extends BaseGame with KeyboardEvents {
       btnLevelFarm.render(c);
       btnLevelNight.render(c);
       btnLevelRocky.render(c);
+    } else if (activeView == View.score) {
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+      scoreView.render(c);
+      replayButton.render(c);
+      homeButton.render(c);
     } else {
       if (onLevelBlue == true) {
         playingViewBlue.render(c);
@@ -210,7 +215,7 @@ class GameController extends BaseGame with KeyboardEvents {
       } else if (lifes == 1) {
         life.render(c);
       } else if (lifes == 0) {
-        activeView = View.home;
+        activeView = View.score;
       }
       // Condition Pause
       if (runOnCreation == true) {

@@ -10,8 +10,8 @@ class ReplayButton {
   final GameController game;
   Rect rect;
   Sprite sprite;
-  TextConfig textConfig = TextConfig(
-      color: Color(0xFF0D1D3E), fontSize: 50, fontFamily: 'Chlakh');
+  TextConfig textConfig =
+      TextConfig(color: Color(0xFF0D1D3E), fontSize: 50, fontFamily: 'Chlakh');
 
   ReplayButton(this.game) {
     resize();
@@ -43,6 +43,8 @@ class ReplayButton {
 
   void onTapDown() {
     game.activeView = View.playing;
-    print("coucou");
+    game.score = 0;
+    game.speed = 0;
+    game.lifes = 3;
   }
 }
