@@ -21,6 +21,6 @@ class Life2 {
 
   void resize() {
     rect = Rect.fromLTWH(game.tileSize * 7, game.tileSize * 0.5,
-        game.tileSize * 0.6, game.tileSize * 0.6);
+        game.tileSize * 0.8, game.tileSize * 0.6);
   }
 }
