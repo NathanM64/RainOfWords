@@ -49,6 +49,7 @@ class GameController extends BaseGame with KeyboardEvents {
   Random random;
   List<Rain> words = [];
   int indexWord = -1;
+  int lifes;
   bool onLevelBlue = false;
   bool onLevelNight = false;
   bool onLevelFarm = false;
@@ -106,6 +107,7 @@ class GameController extends BaseGame with KeyboardEvents {
     speedUpTimer = 0;
     createWordTimer = 0;
     score = 0;
+    lifes = 3;
 
     generateFirstWord();
   }
@@ -179,6 +181,7 @@ class GameController extends BaseGame with KeyboardEvents {
         btnPause.render(c);
         if (activeView == View.playing || activeView == View.lost)
           scoreDisplay.render(c);
+        if (lifes == 0) activeView = View.home;
       } else {
         pauseRect.render(c);
         btnGame.render(c);
@@ -235,6 +238,8 @@ class GameController extends BaseGame with KeyboardEvents {
     words.forEach((word) => word.update(t));
     words.forEach((word) {
       if (word.destroyed()) word.setText('');
+      if (word.destroyed() && !word.getStatus() && activeView == View.playing)
+        lifes--;
     });
     if (activeView == View.playing) scoreDisplay.update(t);
   }

@@ -51,6 +51,8 @@ class BtnLevelRocky {
     game.activeView = View.playing;
     game.onLevelRocky = true;
     game.score = 0;
+    game.lifes = 0;
+    game.speed = 3;
     game.words.removeRange(0, game.words.length);
   }
 }
