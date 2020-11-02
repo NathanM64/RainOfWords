@@ -3,22 +3,14 @@ import 'package:rainofwords/game_controller.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-class PlayingView {
+class PlayingViewBlue {
   final GameController game;
   Rect homeRect;
   Sprite homeSprite;
 
-  PlayingView(this.game) {
+  PlayingViewBlue(this.game) {
     resize();
-    if (game.onLevelBlue == true) {
-      print(game.onLevelBlue);
-      homeSprite = Sprite('Backg/blue_mountain.png');
-    } else if (game.onLevelBlue != true) {
-      print(game.onLevelBlue);
-      homeSprite = Sprite('Backg/farm_moutain.png');
-    } else {
-      homeSprite = Sprite('Backg/night_mountain.png');
-    }
+    homeSprite = Sprite('Backg/blue_mountain.png');
   }
 
   void render(Canvas c) {
