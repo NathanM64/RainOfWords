@@ -178,6 +178,8 @@ class GameController extends BaseGame with KeyboardEvents {
         playingViewFarm.render(c);
       } else if (onLevelRocky == true) {
         playingViewRocky.render(c);
+      } else {
+        print(Error());
       }
       SystemChannels.textInput.invokeMethod('TextInput.show');
       words.forEach((word) {
@@ -196,7 +198,7 @@ class GameController extends BaseGame with KeyboardEvents {
         life.render(c);
       } else if (lifes == 1) {
         life.render(c);
-      } else {
+      } else if (lifes == 0) {
         activeView = View.home;
       }
       // Condition Pause
