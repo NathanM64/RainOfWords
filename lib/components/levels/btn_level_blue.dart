@@ -43,8 +43,12 @@ class BtnLevelBlue {
         game.tileSize * 2.5);
   }
 
-  void onTapDown() {
+  void onTapDown([bool bool]) {
+    game.onLevelBlue = true;
     game.activeView = View.playing;
-    print('Bien joué');
+    game.score = 0;
+    game.speed = 0;
+    game.lifes = 3;
+    game.words.removeRange(0, game.words.length);
   }
 }

@@ -49,6 +49,10 @@ class BtnLevelRocky {
 
   void onTapDown() {
     game.activeView = View.playing;
-    print('Bien joué');
+    game.onLevelRocky = true;
+    game.score = 0;
+    game.speed = 0;
+    game.lifes = 3;
+    game.words.removeRange(0, game.words.length);
   }
 }
