@@ -4,6 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:rainofwords/components/btn-replay.dart';
+import 'components/btn-home.dart';
+import 'package:rainofwords/views/view-score.dart';
 import 'components/rain.dart';
 import 'view.dart';
 import 'views/view-home.dart';
@@ -68,14 +71,17 @@ class GameController extends BaseGame with KeyboardEvents {
 
   View activeView = View.home;
   HomeView homeView;
+  ScoreView scoreView;
   LevelView levelView;
   PlayingViewBlue playingViewBlue;
   PlayingViewNight playingViewNight;
   PlayingViewFarm playingViewFarm;
   PlayingViewRocky playingViewRocky;
 
-// Buttons
+// Buttons or components
   StartButton startButton;
+  ReplayButton replayButton;
+  HomeButton homeButton;
   BtnLevelBlue btnLevelBlue;
   BtnLevelFarm btnLevelFarm;
   BtnLevelNight btnLevelNight;
@@ -95,7 +101,10 @@ class GameController extends BaseGame with KeyboardEvents {
     random = Random();
     resize(Size.zero);
     homeView = HomeView(this);
+    scoreView = ScoreView(this);
     startButton = StartButton(this);
+    homeButton = HomeButton(this);
+    replayButton = ReplayButton(this);
     btnLevelBlue = BtnLevelBlue(this);
     btnLevelFarm = BtnLevelFarm(this);
     btnLevelNight = BtnLevelNight(this);
@@ -277,7 +286,11 @@ class GameController extends BaseGame with KeyboardEvents {
     tileSize = screenSize.width / 10;
     // Page Home
     startButton?.resize();
+    homeButton?.resize();
+    replayButton?.resize();
     homeView?.resize();
+    scoreView?.resize();
+    playingView?.resize();
     // Vies
     life?.resize();
     life2?.resize();
@@ -336,6 +349,15 @@ class GameController extends BaseGame with KeyboardEvents {
         isHandled = true;
       }
     }
+    if (!isHandled && homeButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.score) {
+        homeButton.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && replayButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.score) {
+        replayButton.onTapDown();
     if (!isHandled && btnGame.rect.contains(d.globalPosition)) {
       if (activeView == View.playing) {
         btnGame.onTapDown();

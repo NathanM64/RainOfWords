@@ -4,4 +4,5 @@ enum View {
   playing,
   pause,
   lost,
+  score
 }
