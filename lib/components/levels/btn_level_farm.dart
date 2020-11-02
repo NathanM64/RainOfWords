@@ -47,6 +47,6 @@ class BtnLevelFarm {
 
   void onTapDown() {
     game.activeView = View.playing;
-    print('Bien joué');
+    print('Level Farm');
   }
 }

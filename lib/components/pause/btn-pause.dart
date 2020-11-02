@@ -31,13 +31,13 @@ class BtnPause {
   void onTapDown() {
     game.activeView = View.playing;
     if (game.runOnCreation == true) {
-      game.pauseEngine();
       print('Pause');
       game.runOnCreation = false;
-    } else {
-      game.resumeEngine();
-      print('Play');
-      game.runOnCreation = true;
     }
+    // else {
+    //   game.resumeEngine();
+    //   print('Play');
+    //   game.runOnCreation = true;
+    // }
   }
 }

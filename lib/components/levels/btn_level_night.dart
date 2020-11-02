@@ -47,6 +47,6 @@ class BtnLevelNight {
 
   void onTapDown() {
     game.activeView = View.playing;
-    print('Bien joué');
+    print('Level Night');
   }
 }

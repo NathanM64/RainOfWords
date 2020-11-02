@@ -10,8 +10,15 @@ class PlayingView {
 
   PlayingView(this.game) {
     resize();
-    // ignore: unrelated_type_equality_checks
-    homeSprite = Sprite('Backg/blue_mountain.png');
+    if (game.onLevelBlue == true) {
+      print(game.onLevelBlue);
+      homeSprite = Sprite('Backg/blue_mountain.png');
+    } else if (game.onLevelBlue != true) {
+      print(game.onLevelBlue);
+      homeSprite = Sprite('Backg/farm_moutain.png');
+    } else {
+      homeSprite = Sprite('Backg/night_mountain.png');
+    }
   }
 
   void render(Canvas c) {

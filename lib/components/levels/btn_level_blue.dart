@@ -43,8 +43,9 @@ class BtnLevelBlue {
         game.tileSize * 2.5);
   }
 
-  void onTapDown() {
+  void onTapDown([bool bool]) {
+    game.onLevelBlue = true;
     game.activeView = View.playing;
-    print('Bien joué');
+    print('Level Blue');
   }
 }
