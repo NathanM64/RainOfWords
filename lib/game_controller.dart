@@ -12,6 +12,8 @@ import 'views/view-home.dart';
 import 'views/view-level.dart';
 import 'views/view-playing.dart';
 import 'components/start_button.dart';
+import 'components/score-display.dart';
+
 import 'components/levels/btn_level_blue.dart';
 import 'components/levels/btn_level_farm.dart';
 import 'components/levels/btn_level_night.dart';
@@ -21,23 +23,30 @@ import 'package:flutter/services.dart';
 import 'package:flame/keyboard.dart';
 import 'dart:math';
 import 'package:rainofwords/components/word_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const SPEED = 0;
 
 class GameController extends BaseGame with KeyboardEvents {
+  final SharedPreferences storage;
+
   Size screenSize;
   double tileSize;
+
   double createWordTimer;
   int score;
   TextConfig displayScore;
   Rain word;
   Random random;
   List<Rain> words = [];
+  ScoreDisplay scoreDisplay;
+
   View activeView = View.home;
   HomeView homeView;
   LevelView levelView;
-  int indexWord = -1;
   PlayingView playingView;
+
+  int indexWord = -1;
 
 // Buttons
   StartButton startButton;
@@ -47,7 +56,7 @@ class GameController extends BaseGame with KeyboardEvents {
   BtnLevelRocky btnLevelRocky;
   BtnPause btnPause;
 
-  GameController() {
+  GameController(this.storage) {
     initialize();
   }
 
@@ -62,12 +71,16 @@ class GameController extends BaseGame with KeyboardEvents {
     btnLevelNight = BtnLevelNight(this);
     btnLevelRocky = BtnLevelRocky(this);
     btnPause = BtnPause(this);
+    scoreDisplay = ScoreDisplay(this);
+
     levelView = LevelView(this);
     playingView = PlayingView(this);
+
     createWordTimer = 0;
     score = 0;
-    displayScore = TextConfig(
-        color: Color(0xFF0D1D3E), fontSize: 30.0, fontFamily: 'Chlakh');
+
+    // displayScore = TextConfig(
+    //     color: Color(0xFF0D1D3E), fontSize: 30.0, fontFamily: 'Chlakh');
 
     generateFirstWord();
   }
@@ -87,19 +100,20 @@ class GameController extends BaseGame with KeyboardEvents {
   double getWordWidth(Rain aWord) {
     double boxLen = aWord.width;
     double screen = screenSize.width.truncateToDouble() - 1;
-    int position = random.nextInt(screenSize.width.toInt() - (screenSize.width.toInt() / 2).truncate());
+    int position = random.nextInt(
+        screenSize.width.toInt() - (screenSize.width.toInt() / 2).truncate());
     random = Random();
     double posPbox = position + boxLen + 10;
 
-  // Solution temporaire -- Besoin de réécrire le update
-    if ( position > 0 && posPbox <= screen )  {
+    // Solution temporaire -- Besoin de réécrire le update
+    if (position > 0 && posPbox <= screen) {
       return position.truncateToDouble();
     } else if (posPbox > screen) {
       return 50;
     } else {
       return 20;
     }
- }
+  }
 
   @override
   void render(Canvas c) {
@@ -115,6 +129,8 @@ class GameController extends BaseGame with KeyboardEvents {
       btnLevelRocky.render(c);
     } else {
       playingView.render(c);
+      if (activeView == View.playing) scoreDisplay.render(c);
+
       words.forEach((word) {
         if (!word.destroyed()) {
           word.render(c);
@@ -122,7 +138,6 @@ class GameController extends BaseGame with KeyboardEvents {
           c.save();
         }
       });
-      displayScore.render(c, "Score: ${score}", Position(5, 5));
 
       btnPause.render(c);
       SystemChannels.textInput.invokeMethod('TextInput.show');
@@ -176,6 +191,7 @@ class GameController extends BaseGame with KeyboardEvents {
         }
       }
     });
+    if (activeView == View.playing) scoreDisplay.update(t);
   }
 
   @override
