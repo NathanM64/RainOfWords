@@ -39,7 +39,7 @@ class ScoreDisplay {
 
       position = Offset(
         (game.screenSize.width) / (painter.width / 2),
-        (game.screenSize.height * .02) - (painter.height / 2),
+        game.tileSize * 0.5,
       );
     }
   }

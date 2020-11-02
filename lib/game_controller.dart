@@ -1,5 +1,3 @@
-import 'package:flame/position.dart';
-import 'package:flame/sprite.dart';
 import 'package:flame/text_config.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
@@ -43,19 +41,22 @@ class GameController extends BaseGame with KeyboardEvents {
   Size screenSize;
   double tileSize;
 
-  double speedUpTimer;
-  double createWordTimer;
-  int score;
-  TextConfig displayScore;
-  Rain word;
   double speed;
   Random random;
+  double createWordTimer;
+  double speedUpTimer;
+  TextConfig displayScore;
+  Rain word;
+  List<Rain> words = [];
+  int indexWord = -1;
+
+  int score;
+// Vies
+  int lifes;
   Life life;
   Life2 life2;
   Life3 life3;
-  List<Rain> words = [];
-  int indexWord = -1;
-  int lifes;
+// OnLevels
   bool onLevelBlue = false;
   bool onLevelNight = false;
   bool onLevelFarm = false;
@@ -267,22 +268,28 @@ class GameController extends BaseGame with KeyboardEvents {
 
   @override
   void resize(Size size) {
+    // Par défaut
     screenSize = size;
     tileSize = screenSize.width / 10;
+    // Page Home
     startButton?.resize();
     homeView?.resize();
+    // Vies
     life?.resize();
     life2?.resize();
     life3?.resize();
+    // Differents Backgrounds levels
     playingViewBlue?.resize();
     playingViewNight?.resize();
     playingViewFarm?.resize();
     playingViewRocky?.resize();
+    // Page Levels
     levelView?.resize();
     btnLevelBlue?.resize();
     btnLevelFarm?.resize();
     btnLevelNight?.resize();
     btnLevelRocky?.resize();
+    // Btn en jeu
     btnPause?.resize();
     pauseRect?.resize();
     btnGame?.resize();
