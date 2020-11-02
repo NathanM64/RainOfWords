@@ -6,6 +6,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:rainofwords/components/btn-replay.dart';
+import 'components/btn-home.dart';
 import 'package:rainofwords/views/view-score.dart';
 import 'components/rain.dart';
 import 'view.dart';
@@ -41,8 +43,10 @@ class GameController extends BaseGame with KeyboardEvents {
   int indexWord = -1;
   PlayingView playingView;
 
-// Buttons
+// Buttons or components
   StartButton startButton;
+  ReplayButton replayButton;
+  HomeButton homeButton;
   BtnLevelBlue btnLevelBlue;
   BtnLevelFarm btnLevelFarm;
   BtnLevelNight btnLevelNight;
@@ -60,6 +64,8 @@ class GameController extends BaseGame with KeyboardEvents {
     homeView = HomeView(this);
     scoreView = ScoreView(this);
     startButton = StartButton(this);
+    homeButton = HomeButton(this);
+    replayButton = ReplayButton(this);
     btnLevelBlue = BtnLevelBlue(this);
     btnLevelFarm = BtnLevelFarm(this);
     btnLevelNight = BtnLevelNight(this);
@@ -106,7 +112,6 @@ class GameController extends BaseGame with KeyboardEvents {
 
   @override
   void render(Canvas c) {
-    // if (activeView == View.home) scoreView.render(c);
     if (activeView == View.home) homeView.render(c);
     if (activeView == View.home) {
       startButton.render(c);
@@ -187,6 +192,8 @@ class GameController extends BaseGame with KeyboardEvents {
     screenSize = size;
     tileSize = screenSize.width / 10;
     startButton?.resize();
+    homeButton?.resize();
+    replayButton?.resize();
     homeView?.resize();
     scoreView?.resize();
     playingView?.resize();
@@ -231,6 +238,18 @@ class GameController extends BaseGame with KeyboardEvents {
     if (!isHandled && btnPause.rect.contains(d.globalPosition)) {
       if (activeView == View.playing) {
         btnPause.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && homeButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.score) {
+        homeButton.onTapDown();
+        isHandled = true;
+      }
+    }
+    if (!isHandled && replayButton.rect.contains(d.globalPosition)) {
+      if (activeView == View.score) {
+        replayButton.onTapDown();
         isHandled = true;
       }
     }
