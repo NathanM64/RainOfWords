@@ -46,5 +46,6 @@ class ReplayButton {
     game.score = 0;
     game.speed = 0;
     game.lifes = 3;
+    game.words.removeRange(0, game.words.length);
   }
 }
