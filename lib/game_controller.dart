@@ -185,7 +185,7 @@ class GameController extends BaseGame with KeyboardEvents {
       scoreView.render(c);
       replayButton.render(c);
       homeButton.render(c);
-    } else {
+    } else if (activeView == View.playing) {
       if (onLevelBlue == true) {
         playingViewBlue.render(c);
       } else if (onLevelNight == true) {
