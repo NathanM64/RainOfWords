@@ -252,6 +252,9 @@ class GameController extends BaseGame with KeyboardEvents {
             words.elementAt(indexWord).complete();
             indexWord = -1;
             score += 10;
+            if (score > (storage.getInt('highscore') ?? 0)) {
+              storage.setInt('highscore', score);
+            }
           }
         }
       }
